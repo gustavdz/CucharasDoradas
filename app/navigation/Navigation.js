@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 import RestaurantsScreen from '../screens/Restaurants';
 import TopRestaurantsScreen from '../screens/TopRestaurants';
-import MyAccountScreen from '../screens/MyAccount';
+import MyAccountScreen from '../screens/Account/MyAccount';
 import SearchScreen from '../screens/Search';
 
 const Tab = createBottomTabNavigator();
@@ -48,22 +48,22 @@ function MyAccountStack() {
 export default function Navigation() {
     return (
         <NavigationContainer>
-            <Tab.Navigator>
+            <Tab.Navigator initialRouteName='Cuenta'>
                 <Tab.Screen
                     name='Restaurantes'
                     component={RestaurantsStack}
                     options={{
                         tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons name='home' color={color} size={size} />
+                            <MaterialCommunityIcons name='compass-outline' color={color} size={size} />
                         )
                     }}
                 />
                 <Tab.Screen
-                    name='Top 5'
+                    name='Ranking'
                     component={TopRestaurantsStack}
                     options={{
                         tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons name='cup' color={color} size={size} />
+                            <MaterialCommunityIcons name='star-outline' color={color} size={size} />
                         )
                     }}
                 />
@@ -72,12 +72,12 @@ export default function Navigation() {
                     component={SearchRestaurantStack}
                     options={{
                         tabBarIcon: ({color, size}) => (
-                            <MaterialCommunityIcons name='rocket' color={color} size={size} />
+                            <MaterialCommunityIcons name='magnify' color={color} size={size} />
                         )
                     }}
                 />
                 <Tab.Screen
-                    name='Mi cuenta'
+                    name='Cuenta'
                     component={MyAccountStack}
                     options={{
                         tabBarIcon: ({color, size}) => (
