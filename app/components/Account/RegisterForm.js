@@ -1,19 +1,46 @@
 import React, {useState} from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { validateEmail } from '../../utils/Validation';
+import * as firebase from 'firebase';
 
 export default function RegisterForm() {
     const [hidePassword, setHidePassword] = useState(true);
     const [hideRepeatPassword, setHideRepeatPassword] = useState(true);
-    const register = () => {
-        console.log('Usuario Registrado...');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
+
+    const register = async () => {
+        if(!email || !password || !repeatPassword) {
+            console.log('todos los campos son obligatorios');
+        } else {
+            if(!validateEmail(email)){
+                console.log('El email no es correcto')
+            } else {
+                if(password !== repeatPassword) {
+                    console.log('Las contraseñas no son iguales');
+                } else {
+                    await firebase
+                        .auth()
+                        .createUserWithEmailAndPassword(email, password)
+                        .then(() => {
+                            console.log('Usuario creado correctamente');
+                        })
+                        .catch(() => {
+                            console.log('Error al crear la cuenta, intentelo más tarde');
+                        })
+                }
+            }
+
+        }
     };
     return (
         <View style={styles.formContainer} behavior='padding' enabled>
             <Input
                 placeholder='Correo electrónico'
                 containerStyle={styles.inputForm}
-                onChange={() => console.log('Email actualizado...')}
+                onChange={e => setEmail(e.nativeEvent.text)}
                 rightIcon={
                     <Icon
                         type='material-community'
@@ -27,7 +54,7 @@ export default function RegisterForm() {
                 password={true}
                 secureTextEntry={hidePassword}
                 containerStyle={styles.inputForm}
-                onChange={() => console.log('Contraseña actualizada...')}
+                onChange={e => setPassword(e.nativeEvent.text)}
                 rightIcon={
                     <Icon
                         type='material-community'
@@ -42,7 +69,7 @@ export default function RegisterForm() {
                 password={true}
                 secureTextEntry={hideRepeatPassword}
                 containerStyle={styles.inputForm}
-                onChange={() => console.log('Repetir contraseña actualizada...')}
+                onChange={e => setRepeatPassword(e.nativeEvent.text)}
                 rightIcon={
                     <Icon
                         type='material-community'
