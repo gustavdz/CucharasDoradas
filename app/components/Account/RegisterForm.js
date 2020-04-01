@@ -3,37 +3,43 @@ import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { validateEmail } from '../../utils/Validation';
 import * as firebase from 'firebase';
+import { withNavigation } from "@react-navigation/compat";
+import Loading from "../Loading";
 
-export default function RegisterForm() {
+function RegisterForm(props) {
+    const { toastRef, navigation } = props;
     const [hidePassword, setHidePassword] = useState(true);
     const [hideRepeatPassword, setHideRepeatPassword] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
+    const [isVisibleLoading, setIsVisibleLoading] = useState(false);
 
     const register = async () => {
+        setIsVisibleLoading(true);
         if(!email || !password || !repeatPassword) {
-            console.log('todos los campos son obligatorios');
+            toastRef.current.show('Todos los campos son obligatorios');
         } else {
             if(!validateEmail(email)){
-                console.log('El email no es correcto')
+                toastRef.current.show('El email no es correcto');
             } else {
                 if(password !== repeatPassword) {
-                    console.log('Las contraseñas no son iguales');
+                    toastRef.current.show('Las contraseñas no son iguales');
                 } else {
                     await firebase
                         .auth()
                         .createUserWithEmailAndPassword(email, password)
                         .then(() => {
-                            console.log('Usuario creado correctamente');
+                            navigation.navigate('Mi Cuenta');
                         })
                         .catch(() => {
-                            console.log('Error al crear la cuenta, intentelo más tarde');
+                            toastRef.current.show('Error al crear la cuenta, intentelo más tarde');
                         })
                 }
             }
 
         }
+        setIsVisibleLoading(false);
     };
     return (
         <View style={styles.formContainer} behavior='padding' enabled>
@@ -85,9 +91,12 @@ export default function RegisterForm() {
                 buttonStyle={styles.btnRegister}
                 onPress={register}
             />
+            <Loading isVisible={isVisibleLoading} text='Creando cuenta' />
         </View>
     );
 }
+
+export default withNavigation(RegisterForm);
 
 const styles = StyleSheet.create({
     formContainer: {
