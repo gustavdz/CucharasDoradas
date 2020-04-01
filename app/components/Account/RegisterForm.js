@@ -46,6 +46,7 @@ function RegisterForm(props) {
             <Input
                 placeholder='Correo electrónico'
                 containerStyle={styles.inputForm}
+                autoCapitalize='none'
                 onChange={e => setEmail(e.nativeEvent.text)}
                 rightIcon={
                     <Icon
