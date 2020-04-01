@@ -23,12 +23,12 @@ function LoginForm(props) {
             } else {
                 await firebase
                     .auth()
-                    .Login(email, password)
+                    .signInWithEmailAndPassword(email, password)
                     .then(() => {
                         navigation.navigate('Mi Cuenta');
                     })
                     .catch(() => {
-                        toastRef.current.show('Error al crear la cuenta, intentelo más tarde');
+                        toastRef.current.show('Credenciales ingresadas incorrectas');
                     })
             }
 
