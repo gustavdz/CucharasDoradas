@@ -2,9 +2,14 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import Modal from "../Modal";
+import ChangeDisplayNameForm from "./ChangeDisplayNameForm";
+import ChangeEmailForm from "./ChangeEmailForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 
-export default function AccountOptions() {
+export default function AccountOptions(props) {
+    const { userInfo, setReloadData, toastRef } = props;
     const [isVisibleModal, setIsVisibleModal] = useState(false);
+    const [renderComponent, setRenderComponent] = useState(null);
     const menuOptions = [
         {
             title: "Cambiar nombre y apellidos",
@@ -13,7 +18,7 @@ export default function AccountOptions() {
             iconColorLeft: '#ccc',
             iconNameRight: 'chevron-right',
             iconColorRight: '#ccc',
-            onPress: () => selectedComponent()
+            onPress: () => selectedComponent('displayName')
         },
         {
             title: "Cambiar email",
@@ -22,7 +27,7 @@ export default function AccountOptions() {
             iconColorLeft: '#ccc',
             iconNameRight: 'chevron-right',
             iconColorRight: '#ccc',
-            onPress: () => console.log('Change email')
+            onPress: () => selectedComponent('email')
         },
         {
             title: "Cambiar contraseña",
@@ -31,12 +36,49 @@ export default function AccountOptions() {
             iconColorLeft: '#ccc',
             iconNameRight: 'chevron-right',
             iconColorRight: '#ccc',
-            onPress: () => console.log('Change password')
+            onPress: () => selectedComponent('password')
         }
     ];
 
-    const selectedComponent = () => {
-        setIsVisibleModal(true);
+    const selectedComponent = ( key ) => {
+        // setIsVisibleModal(true);
+        switch (key) {
+            case 'displayName': {
+                setRenderComponent(
+                    <ChangeDisplayNameForm
+                        displayName={userInfo.displayName}
+                        setIsVisibleModal={setIsVisibleModal}
+                        setReloadData={setReloadData}
+                        toastRef={toastRef}
+                    />);
+                setIsVisibleModal(true);
+                break;
+            }
+            case 'email': {
+                setRenderComponent(
+                    <ChangeEmailForm
+                        email={userInfo.email}
+                        setIsVisibleModal={setIsVisibleModal}
+                        setReloadData={setReloadData}
+                        toastRef={toastRef}
+                    />
+                );
+                setIsVisibleModal(true);
+                break;
+            }
+            case 'password': {
+                setRenderComponent(
+                    <ChangePasswordForm
+                        setIsVisibleModal={setIsVisibleModal}
+                        toastRef={toastRef}
+                    />
+                    );
+                setIsVisibleModal(true);
+                break;
+            }
+            default:
+                break;
+        }
     };
 
     return (
@@ -61,11 +103,14 @@ export default function AccountOptions() {
                     />
                 ))
             }
-            <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
-                <View>
-                    <Text>Estoy dentro del Modal.</Text>
-                </View>
-            </Modal>
+
+            {
+                renderComponent && (
+                <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
+                {renderComponent}
+                </Modal>
+                )
+            }
         </View>
     );
 }
