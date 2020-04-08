@@ -16,7 +16,41 @@ export default function ChangePasswordForm (props) {
     const [hideNewPasswordRepeat, setHideNewPasswordRepeat] = useState(true);
 
     const updatePassword = () => {
-        console.log('Cambio de contraseña');
+        setError({});
+        if (!password || ! newPassword || !newPasswordRepeat){
+            let objError = {};
+            !password && (objError.password = 'No puede estar vacío');
+            !newPassword && (objError.newPassword = 'No puede estar vacío');
+            !newPasswordRepeat && (objError.newPasswordRepeat = 'No puede estar vacío');
+            setError(objError);
+        } else {
+            if (newPassword !== newPasswordRepeat){
+                setError({
+                    newPassword: "Las nuevas contraseñas deben ser iguales.",
+                    newPasswordRepeat: "Las nuevas contraseñas deben ser iguales.",
+                });
+            } else {
+                setIsLoading(true);
+                reauthenticate(password)
+                    .then(() => {
+                        firebase.auth().currentUser.updatePassword(newPassword)
+                            .then(() => {
+                                setIsLoading(false);
+                                toastRef.current.show('Contraseña actualizado correctamente');
+                                setIsVisibleModal(false);
+                                // firebase.auth().signOut();
+                            })
+                            .catch(() => {
+                                setError({general: 'Error al actualizar la contraseña'});
+                                setIsLoading(false);
+                            });
+                })
+                    .catch(() =>{
+                        setError({password: 'La contraseña no es correcta'});
+                        setIsLoading(false);
+                    });
+            }
+        }
     };
     return (
         <View style={styles.view}>

@@ -7,14 +7,12 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function InfoUser(props) {
     const {
-        userInfo,
         userInfo: { photoURL, uid, displayName, email},
         setReloadData,
         toastRef,
         setIsLoading,
         setTextLoading
     } = props;
-    console.log(userInfo);
 
     const changeAvatar = async () => {
         const resultPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
