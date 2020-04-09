@@ -4,7 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 
-import RestaurantsScreen from '../screens/Restaurants';
+import RestaurantsScreen from '../screens/Restaurants/Restaurants';
+import AddRestaurantsScreen from '../screens/Restaurants/AddRestaurant';
 import TopRestaurantsScreen from '../screens/TopRestaurants';
 import MyAccountScreen from '../screens/Account/MyAccount';
 import SearchScreen from '../screens/Search';
@@ -18,7 +19,7 @@ function RestaurantsStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen name='Restaurantes' component={RestaurantsScreen}/>
-            <Stack.Screen name='Restaurante' component={RestaurantsScreen}/>
+            <Stack.Screen name='Nuevo Restaurante' component={AddRestaurantsScreen}/>
         </Stack.Navigator>
     )
 }
@@ -52,7 +53,7 @@ function MyAccountStack() {
 export default function Navigation() {
     return (
         <NavigationContainer>
-            <Tab.Navigator initialRouteName='Cuenta'>
+            <Tab.Navigator initialRouteName='Restaurantes'>
                 <Tab.Screen
                     name='Restaurantes'
                     component={RestaurantsStack}
