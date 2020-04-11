@@ -15,7 +15,7 @@ const db = firebase.firestore(firebaseApp);
 const WidthScreen = Dimensions.get("window").width;
 
 export default function AddRestaurantForm(props) {
-    const {toastRef, navigation, setIsLoading} = props;
+    const {toastRef, navigation, setIsLoading, setIsReloadRestaurants } = props;
     const [imagesSelected, setImagesSelected] = useState([]);
     const [restaurantName, setRestaurantName] = useState('');
     const [restaurantAddress, setRestaurantAddress] = useState('');
@@ -48,6 +48,7 @@ export default function AddRestaurantForm(props) {
                         createdBy: firebaseApp.auth().currentUser.uid
                     }).then(result => {
                         setIsLoading(false);
+                        setIsReloadRestaurants(true);
                         navigation.navigate('Restaurantes');
                     }).catch(error => {
                         setIsLoading(false);
