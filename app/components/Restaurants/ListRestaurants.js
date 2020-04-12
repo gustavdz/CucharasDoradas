@@ -37,7 +37,7 @@ export default function ListRestaurants(props) {
 }
 
 function Restaurant(props) {
-    const { restaurant } = props;
+    const { restaurant, navigation } = props;
     const { name, address, description, images } = restaurant.item.restaurant;
     const [imageRestaurant, setImageRestaurant] = useState(null);
 
@@ -54,8 +54,9 @@ function Restaurant(props) {
 
     return (
         <TouchableOpacity
-            onPress={() => console.log('Ingresando en el restaurante')
-            }
+            onPress={() => {
+                navigation.navigate('Restaurante',{'restaurant': restaurant})
+            }}
         >
             {!imageRestaurant ||
                 <View style={styles.viewRestaurant}>

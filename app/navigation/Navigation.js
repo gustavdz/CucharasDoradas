@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "react-native-vector-icons";
 
 import RestaurantsScreen from '../screens/Restaurants/Restaurants';
 import AddRestaurantsScreen from '../screens/Restaurants/AddRestaurant';
+import RestaurantScreen from "../screens/Restaurants/Restaurant";
 import TopRestaurantsScreen from '../screens/TopRestaurants';
 import MyAccountScreen from '../screens/Account/MyAccount';
 import SearchScreen from '../screens/Search';
@@ -20,6 +21,7 @@ function RestaurantsStack() {
         <Stack.Navigator>
             <Stack.Screen name='Restaurantes' component={RestaurantsScreen}/>
             <Stack.Screen name='Nuevo Restaurante' component={AddRestaurantsScreen}/>
+            <Stack.Screen name='Restaurante' component={RestaurantScreen} options={({ route }) => ({ title: route.params.restaurant.item.restaurant.name })}/>
         </Stack.Navigator>
     )
 }
