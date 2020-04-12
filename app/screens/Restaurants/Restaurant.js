@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text} from "react-native";
+import { StyleSheet, View, Text, Dimensions} from "react-native";
+import Carousel from "../../components/Carousel";
 import * as firebase from "firebase";
+
 export default function Restaurant(props) {
     const {route} = props;
     const { restaurant } = route.params.restaurant.item;
     const [imagesRestaurant, setImagesRestaurant] = useState([]);
-    
+    const screenWidth = Dimensions.get('window').width;
+
     useEffect(() => {
         const arrayUrls = [];
         (async () =>{
@@ -26,7 +29,11 @@ export default function Restaurant(props) {
 
     return (
         <View>
-            <Text>Página del restaurante...</Text>
+            <Carousel
+                arrayImages={imagesRestaurant}
+                width={screenWidth}
+                height={200}
+            />
         </View>
     );
 }
