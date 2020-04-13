@@ -8,7 +8,11 @@ if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
 export default function App() {
-  return (
-    <Navigation />
-  );
+  if (!global.btoa) {
+    global.btoa = encode;
+  }
+  if (!global.atob) {
+    global.atob = decode;
+  }
+  return <Navigation />;
 }
